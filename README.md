@@ -1,5 +1,5 @@
 # DotA-v6.78c-AI-1.5a-Encore
-A long overdue update to the legacy of the dota1 AI map. This version of the map is for pre-reforged w3c TFT - just like the good old days.
+A long overdue update to the legacy of the dota1 AI map. This version of the map is for pre-reforged w3c TFT (tested on v1.27b - just like the good old days).
 
 This is an update to the final AI version released by the heroes of my childhood:
 PleaseBugMeNot, Cloud, Sebra, Gabo, Ciel, Green.
