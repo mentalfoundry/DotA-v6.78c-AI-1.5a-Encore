@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to create the release for (e.g. v1.5a)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve tag
+        id: tag
+        run: echo "tag=${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}" >> "$GITHUB_OUTPUT"
+
+      - name: Build zip
+        run: |
+          zip -j "DotA-v6.78c-AI-1.5a-Encore-${{ steps.tag.outputs.tag }}.zip" \
+            "DotA v6.78c AI 1.5a.w3x" \
+            README.md
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.tag.outputs.tag }}" \
+            --title "${{ steps.tag.outputs.tag }}" \
+            --generate-notes \
+            "DotA-v6.78c-AI-1.5a-Encore-${{ steps.tag.outputs.tag }}.zip" \
+          || gh release upload "${{ steps.tag.outputs.tag }}" \
+            "DotA-v6.78c-AI-1.5a-Encore-${{ steps.tag.outputs.tag }}.zip" --clobber
